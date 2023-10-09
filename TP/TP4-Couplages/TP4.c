@@ -16,7 +16,7 @@ int cardinal_couplage(graphe G, int* C){
     return 0;
 }
 
-liste* chemin_alternant(graphe G, int* C, bool* vus, int s){
+liste* chemin_alternant(graphe G, int* C, bool* vus, int x){
     // À compléter
     return NULL;
 }
@@ -70,12 +70,20 @@ int* couplage_maximum_poids_minimum(graphe G, double** M){
     return NULL;
 }
 
+void print_list(liste* lst){
+    while (lst != NULL){
+        printf("%d ", lst->val);
+        lst = lst->succ;
+    }
+    printf("\n");
+}
+
 int main(void){
     graphe G1 = generer_graphe(6, 6, 3, 61);
     double** M1 = creer_ponderations(G1, 30, 61);
 
     graphe G2 = generer_graphe(100, 100, 5, 1);
-    double** M2 = creer_ponderations(G3, 100, 1);
+    double** M2 = creer_ponderations(G2, 100, 1);
 
     graphe G3 = generer_graphe(10000, 10000, 10, 42);
     
