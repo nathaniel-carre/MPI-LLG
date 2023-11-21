@@ -1,4 +1,4 @@
-#use "C:/Users/nathaniel/Nextcloud/Cours/MPI/TP/TP6-Expressions régulières/regex.ml";;
+#use (* À MODIFIER/ *)"regex.ml";;
 
 let e0 = parse "(a|ba*)*|ab*a";;
 
