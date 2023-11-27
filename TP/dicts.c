@@ -19,7 +19,7 @@ void list_free(list* lst){
 
 list* constr(int k, int v, list* lst){
     // Crée une nouvelle liste de doublons étant donnée une tête et une queue.
-    list* ret = malloc(sizeof(*ret));
+    list* ret = malloc(sizeof(list));
     ret->key = k;
     ret->val = v;
     ret->next = lst;
@@ -50,7 +50,16 @@ int size(dict D){
 
 int hash(dict D, int k){
     // Renvoie le haché d'un entier.
-    return (int)floor(D.capacity * k * phi) % D.capacity;
+    return (int)floor(D.capacity * (k % 1000) * phi) % D.capacity;
+}
+
+void print_list(list* lst){
+    if (lst == NULL){
+        printf("\n");
+    } else {
+        printf("(%d, %d), ", lst->key, lst->val);
+        print_list(lst->next);
+    }
 }
 
 bool member_list(list* lst, int k){
