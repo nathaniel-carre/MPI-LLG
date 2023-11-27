@@ -53,15 +53,6 @@ int hash(dict D, int k){
     return (int)floor(D.capacity * (k % 1000) * phi) % D.capacity;
 }
 
-void print_list(list* lst){
-    if (lst == NULL){
-        printf("\n");
-    } else {
-        printf("(%d, %d), ", lst->key, lst->val);
-        print_list(lst->next);
-    }
-}
-
 bool member_list(list* lst, int k){
     // Teste l'appartenance d'un entier à une liste.
     list* tmp = lst;
