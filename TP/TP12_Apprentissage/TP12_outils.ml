@@ -71,7 +71,7 @@ let tas_vers_tab t =
     end
 
 type image2 = {im : image; sign : (int * int) list}
-type data2 = image2 array * int array
+type data2 = image2 array * int array;;
 
 (* Les 2 lignes suivantes sont à décommenter pour les versions
    récentes de OCaml. *)
