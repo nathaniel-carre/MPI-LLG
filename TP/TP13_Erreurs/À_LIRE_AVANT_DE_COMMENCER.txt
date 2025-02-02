@@ -1,0 +1,3 @@
+Ces TPs sont des TPs donnés par A. Le Gluher du lycée Descartes.
+
+Il est demandé de commencer par le TP13_erreurs_C, puis de faire le TP12_erreurs_OCaml.
