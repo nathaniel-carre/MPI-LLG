@@ -1,0 +1,16 @@
+Init v1
+Init v2
+Init v3
+
++ v2
+= v1 20
+
+while v1    
+    - v1
+    print v3
+    Init v3
+    = v3 v3
+    = v3 v2
+    while v3
+        - v3
+        + v2

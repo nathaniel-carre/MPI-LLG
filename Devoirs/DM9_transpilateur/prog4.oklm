@@ -1,0 +1,62 @@
+init v1
+init v2
+
+= v1 15
++ v2
+
+while v2
+    print v1
+    init v3
+    = v3 v1
+    - v3
+    init v4
+    + v4
+    while v3
+        = v3 0
+        - v4
+    end
+    while v4
+        = v2 0
+        - v4
+    end
+    = v3 v1
+    = v4 v1
+    init v5
+    init v6
+    + v6
+    while v3
+        - v3
+        init v7
+        = v7 v3
+        init v8
+        init v9
+        + v9
+        while v7
+            = v7 0
+            + v8
+            - v9
+        end
+        = v7 v8
+        while v7
+            - v7
+            - v3
+            - v4
+        end
+        = v5 v9
+        = v6 v8
+    end
+    while v6
+        - v6
+        = v1 v4
+    end
+    while v5
+        - v5
+        = v3 v1
+        while v3
+            - v3
+            + v1
+            + v1
+        end
+        + v1
+    end
+end

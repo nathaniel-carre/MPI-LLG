@@ -1,0 +1,15 @@
+init v1
+init v2
+init v3
+= v1 100
+while v1
+    - v1
+    + v2
+    init v4
+    = v4 v2
+    while v4
+        - v4
+        + v3
+    end
+end
+print v3
