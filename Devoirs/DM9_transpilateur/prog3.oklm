@@ -8,9 +8,9 @@ Init v3
 while v1    
     - v1
     print v3
-    Init v3
-    = v3 v3
+    Init v4
+    = v4 v3
     = v3 v2
-    while v3
-        - v3
+    while v4
+        - v4
         + v2
