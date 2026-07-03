@@ -1,1 +1,0 @@
-Ce TP est une création originale d'Aude Le Gluher, enseignante au lycée Descartes, à Tours.
