@@ -37,8 +37,8 @@ int enfant_min(tas t, int i){
     // l'indice i, et l'indice i lui-même si cet enfant n'existe pas.
     int g = 2 * i + 1;
     int d = g + 1;
-    if (i == t.size - 1) return i;
-    if (i == t.size - 2 || t.data[g] < t.data[d]) return g;
+    if (g >= t.size) return i;
+    if (g == t.size - 1 || t.data[g] < t.data[d]) return g;
     return d;
 }
 
