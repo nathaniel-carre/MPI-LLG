@@ -41,4 +41,4 @@ let g1 = [|
     [0; 4]
 |]
 
-let _ = assert (dfs 1 g0 = [1; 4; 0; 6; 5])
+let _ = assert (dfs 1 g1 = [1; 4; 0; 6; 5])
