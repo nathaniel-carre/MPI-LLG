@@ -1,8 +1,5 @@
-#use "topfind"
 #require "graphics"
 #require "unix"
-#load "unix.cma"
-#load "graphics.cma"
 
 type laby = int list array * int * int
 
@@ -38,11 +35,13 @@ let afficher_laby (g, l, c) k =
     			end
     		in
     		List.iter afficher_arete g.(s)
-    	done;	
-   	with _ -> ()
+    	done;
+        ignore (read_key ());
+        close_graph ();
+   	with _ -> close_graph ()
 
 let minisleep (sec: float) =
-    ignore (Unix.select [] [] [] sec)
+    Unix.sleepf sec
 
 let dessiner_laby (g, l, c) aretes k dt =
     let coord s l c = 
@@ -72,8 +71,10 @@ let dessiner_laby (g, l, c) aretes k dt =
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 case is js; case i j; case it jt; minisleep dt                
     		in
-            List.iter afficher_arete aretes
-        with _ -> ()
+            List.iter afficher_arete aretes;  
+            ignore (read_key ());
+            close_graph ();
+        with _ -> close_graph ()
 
 let dessiner_resolution (g, l, c) pred ordre k dt =
     let coord s l c = 
