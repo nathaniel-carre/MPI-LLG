@@ -90,8 +90,26 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
         in
         try
             open_graph res;
-            afficher_laby (g, l, c) k;
-            minisleep 5.;
+            for i = 0 to n - 1 do
+                for j = 0 to p - 1 do            	
+                    if i mod 2 = 1 && j mod 2 = 1 then set_color white
+                    else set_color black;
+                    case i j            	
+                done;
+    	    done;
+            set_color white;
+            for s = 0 to l * c - 1 do
+                let is, js = coord s l c in
+                let afficher_arete t =
+                    if s < t then begin
+                        let it, jt = coord t l c in
+                        let i = (is + it) / 2 and j = (js + jt) / 2 in
+                        case i j
+                    end
+                in
+    		    List.iter afficher_arete g.(s)
+            done;
+            minisleep 3.;
             set_color yellow;
             let afficher t =
                 let s = pred.(t) in
@@ -99,7 +117,7 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
                     it, jt = coord t l c in
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 if s <> -1 then case i j;
-                case it jt; minisleep dt              
+                case it jt; minisleep dt;
     		in
             List.iter afficher ordre;
             set_color green;
@@ -113,7 +131,9 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 case i j; case is js; minisleep dt;
                 t := s;
-            done; 
+            done;
+            ignore (read_key ());
+            close_graph ();
         with _ -> ()
 
 module FilePrio = Map.Make(Int)
