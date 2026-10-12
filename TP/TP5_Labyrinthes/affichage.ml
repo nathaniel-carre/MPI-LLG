@@ -1,5 +1,6 @@
 #use "topfind"
 #require "graphics"
+#require "unix"
 #load "unix.cma"
 #load "graphics.cma"
 
@@ -38,7 +39,7 @@ let afficher_laby (g, l, c) k =
     		in
     		List.iter afficher_arete g.(s)
     	done;	
-   	with _ -> close_graph ()
+   	with _ -> ()
 
 let minisleep (sec: float) =
     ignore (Unix.select [] [] [] sec)
