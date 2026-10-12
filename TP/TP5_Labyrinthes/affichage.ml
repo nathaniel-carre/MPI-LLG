@@ -13,7 +13,7 @@ let afficher_laby (g, l, c) k =
     let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
     let case i j =
         let i' = (i + 1) * k and j' = (j + 1) * k in
-        fill_rect j' i' k k
+        fill_rect j' i' (k - 1) (k - 1)
     in
     try
     	open_graph res;
@@ -53,7 +53,7 @@ let dessiner_laby (g, l, c) aretes k dt =
         let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
         let case i j =
             let i' = (i + 1) * k and j' = (j + 1) * k in
-            fill_rect j' i' k k
+            fill_rect j' i' (k - 1) (k - 1)
         in
         try
             open_graph res;
@@ -63,7 +63,7 @@ let dessiner_laby (g, l, c) aretes k dt =
                     case i j
                 done;
             done;
-            minisleep 5.;
+            minisleep 3.;
             set_color white;
             let afficher_arete (s, t) =
                 let is, js = coord s l c and
@@ -86,7 +86,7 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
         let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
         let case i j =
             let i' = (i + 1) * k and j' = (j + 1) * k in
-            fill_rect j' i' k k
+            fill_rect j' i' (k - 1) (k - 1)
         in
         try
             open_graph res;
