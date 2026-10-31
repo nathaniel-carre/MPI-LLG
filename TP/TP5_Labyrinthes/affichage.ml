@@ -1,7 +1,5 @@
-#use "topfind"
 #require "graphics"
-#load "unix.cma"
-#load "graphics.cma"
+#require "unix"
 
 type laby = int list array * int * int
 
@@ -15,7 +13,7 @@ let afficher_laby (g, l, c) k =
     let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
     let case i j =
         let i' = (i + 1) * k and j' = (j + 1) * k in
-        fill_rect j' i' k k
+        fill_rect j' i' (k - 1) (k - 1)
     in
     try
     	open_graph res;
@@ -37,11 +35,13 @@ let afficher_laby (g, l, c) k =
     			end
     		in
     		List.iter afficher_arete g.(s)
-    	done;	
+    	done;
+        ignore (read_key ());
+        close_graph ();
    	with _ -> close_graph ()
 
 let minisleep (sec: float) =
-    ignore (Unix.select [] [] [] sec)
+    Unix.sleepf sec
 
 let dessiner_laby (g, l, c) aretes k dt =
     let coord s l c = 
@@ -53,7 +53,7 @@ let dessiner_laby (g, l, c) aretes k dt =
         let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
         let case i j =
             let i' = (i + 1) * k and j' = (j + 1) * k in
-            fill_rect j' i' k k
+            fill_rect j' i' (k - 1) (k - 1)
         in
         try
             open_graph res;
@@ -63,7 +63,7 @@ let dessiner_laby (g, l, c) aretes k dt =
                     case i j
                 done;
             done;
-            minisleep 5.;
+            minisleep 3.;
             set_color white;
             let afficher_arete (s, t) =
                 let is, js = coord s l c and
@@ -71,8 +71,10 @@ let dessiner_laby (g, l, c) aretes k dt =
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 case is js; case i j; case it jt; minisleep dt                
     		in
-            List.iter afficher_arete aretes
-        with _ -> ()
+            List.iter afficher_arete aretes;  
+            ignore (read_key ());
+            close_graph ();
+        with _ -> close_graph ()
 
 let dessiner_resolution (g, l, c) pred ordre k dt =
     let coord s l c = 
@@ -84,12 +86,30 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
         let res = " " ^ string_of_int lar ^ "x" ^ string_of_int hau in
         let case i j =
             let i' = (i + 1) * k and j' = (j + 1) * k in
-            fill_rect j' i' k k
+            fill_rect j' i' (k - 1) (k - 1)
         in
         try
             open_graph res;
-            afficher_laby (g, l, c) k;
-            minisleep 5.;
+            for i = 0 to n - 1 do
+                for j = 0 to p - 1 do            	
+                    if i mod 2 = 1 && j mod 2 = 1 then set_color white
+                    else set_color black;
+                    case i j            	
+                done;
+    	    done;
+            set_color white;
+            for s = 0 to l * c - 1 do
+                let is, js = coord s l c in
+                let afficher_arete t =
+                    if s < t then begin
+                        let it, jt = coord t l c in
+                        let i = (is + it) / 2 and j = (js + jt) / 2 in
+                        case i j
+                    end
+                in
+    		    List.iter afficher_arete g.(s)
+            done;
+            minisleep 3.;
             set_color yellow;
             let afficher t =
                 let s = pred.(t) in
@@ -97,7 +117,7 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
                     it, jt = coord t l c in
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 if s <> -1 then case i j;
-                case it jt; minisleep dt              
+                case it jt; minisleep dt;
     		in
             List.iter afficher ordre;
             set_color green;
@@ -111,7 +131,9 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
                 let i = (is + it) / 2 and j = (js + jt) / 2 in
                 case i j; case is js; minisleep dt;
                 t := s;
-            done; 
+            done;
+            ignore (read_key ());
+            close_graph ();
         with _ -> ()
 
 module FilePrio = Map.Make(Int)
