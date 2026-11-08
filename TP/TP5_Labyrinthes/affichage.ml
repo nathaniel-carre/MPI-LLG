@@ -1,3 +1,4 @@
+#use "topfind"
 #require "graphics"
 #require "unix"
 
@@ -134,7 +135,7 @@ let dessiner_resolution (g, l, c) pred ordre k dt =
             done;
             ignore (read_key ());
             close_graph ();
-        with _ -> ()
+        with _ -> close_graph ()
 
 module FilePrio = Map.Make(Int)
 type 'a fileprio = ('a list) FilePrio.t ref
@@ -159,7 +160,7 @@ let extraire_min (fp: 'a fileprio) =
 
 let melange lst =
     let tab = Array.of_list lst in
-    for i = Array.length tab to 1 do
+    for i = Array.length tab downto 1 do
         let j = Random.int i in
         let tmp = tab.(j) in
         tab.(j) <- tab.(i - 1);
