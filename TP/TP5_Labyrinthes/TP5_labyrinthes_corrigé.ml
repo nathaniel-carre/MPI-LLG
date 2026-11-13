@@ -192,11 +192,84 @@ let laby_rec l c =
     creer_laby 0 l c;
     (g, l, c), List.rev !aretes
 
-(* Suite du corrigé en cours de rédaction. *)
+let wilson l c =
+    let n = l * c in
+    let g = Array.make n [] in
+    let aretes = ref [] in
+    let ajout_arete (s, t) =
+        aretes := (s, t) :: !aretes;
+        g.(s) <- t :: g.(s);
+        g.(t) <- s :: g.(t)
+    in
+    let vus = Array.make n false in
+    vus.(0) <- true;
+    let sondage s0 =
+        (* Procédure de sondage depuis un sommet non vu. On crée un nouveau
+           tableau des sommets vus propre à cette procédure, ainsi qu'une
+           pile vide. *)
+        let vus_sondage = Array.make n false in
+        let pile = ref [] in
+        let rec dfs s =
+            (* Fonction récursive permettant de sonder. On applique l'algorithme
+               décrit. Inutile de relancer un appel récursif depuis chaque voisin,
+               un seul suffit (choisi au hasard). *)
+            if vus.(s) then pile := s :: !pile
+            else begin 
+                if not vus_sondage.(s) then begin
+                    vus_sondage.(s) <- true;
+                    pile := s :: !pile;
+                end else begin
+                    while List.hd !pile <> s do
+                        vus_sondage.(List.hd !pile) <- false;
+                        pile := List.tl !pile;
+                    done;
+                end;                
+                dfs (List.hd (melange (voisins_grille s l c)))
+            end
+        in
+        let rec vider () = match !pile with
+            (* Fonction pour ajouter toutes les arêtes vues pendant la procédure
+               de sondage qui a abouti à un sommet déjà vu. *)
+            | s :: t :: reste -> 
+                ajout_arete (s, t);
+                vus.(s) <- true;
+                pile := List.tl !pile;
+                vider ()
+            | _ -> ()
+        in        
+        dfs s0;        
+        pile := List.rev !pile;
+        vider ()
+    in
+    let sommets = melange (List.init n Fun.id) in
+    List.iter (fun s -> if not vus.(s) then sondage s) sommets;
+    (g, l, c), List.rev !aretes
+
+let reso_larg (g, l, c) =
+    (* On fait un parcours en largeur dans le graphe. On s'arrête lorsqu'on
+       atteint le sommet d'arrivée, et pas quand on a vu tous les sommets. *)
+    let n = l * c in
+    let pred = Array.make n (-2) in
+    pred.(0) <- -1;
+    let ordre = ref [0] in
+    let file = Queue.create () in
+    Queue.push 0 file;
+    while pred.(n - 1) = -2 do
+        let s = Queue.pop file in
+        let traiter t =
+            if pred.(t) = -2 then begin
+                pred.(t) <- s;
+                ordre := t :: !ordre;
+                Queue.push t file
+            end
+        in
+        List.iter traiter (melange g.(s))
+    done;
+    pred, List.rev !ordre
 
 let main =
     Random.self_init ();
-    (*
+    
     let laby0 = ([|[3]; [1]; [2;4]; [0;4]; [1;3;5]; [4]|], 2, 3) in
     afficher_laby laby0 20;
 
@@ -216,5 +289,11 @@ let main =
     dessiner_laby laby3 aretes3 10 0.001;
 
     let laby4, aretes4 = laby_rec 20 30 in
-    dessiner_laby laby4 aretes4 10 0.01;*)
+    dessiner_laby laby4 aretes4 10 0.001;
+
+    let laby5, aretes5 = wilson 20 30 in
+    dessiner_laby laby5 aretes5 10 0.001;
+
+    let predlarg, ordrelarg = reso_larg laby in
+    dessiner_resolution laby predlarg ordrelarg 10 0.001;
 
